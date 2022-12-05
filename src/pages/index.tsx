@@ -1,14 +1,46 @@
 import React from "react";
-
 import Head from "next/head";
-import { Layout, Container } from "~/components";
+import { Layout, Container, Loader } from "~/components";
 import type { NextPageWithLayout } from "~/types/common.types";
-
 import Main from "~/views/Main/Main.view";
-import playlistData from "~/data/playlistsData.json";
-import { ModelWithId } from "~/models/Playlist.model";
+import dbConnect from "~/libraries/mongoose.library";
+import { getPlaylists } from "~/libraries/api.library";
+import { InferGetStaticPropsType } from "next";
+import { useList } from "~/hooks/useList.hook";
 
-const Index: NextPageWithLayout = () => {
+export const getStaticProps = async () => {
+  await dbConnect();
+  const limit = 0;
+  const data = await getPlaylists(limit);
+
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      limit,
+      fallbackData: {
+        data,
+      },
+    },
+    revalidate: 60,
+  };
+};
+
+const Index: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>> = ({fallbackData, limit}) => {
+
+const {data, mutate, isLoading } = useList({
+  limit,
+  fallbackData,
+  revalidateOnMount: false,
+  revalidateOnFocus: false,
+})
+
+const playlists = isLoading ? null : data
+
   return (
     <>
       <Head>
@@ -17,7 +49,7 @@ const Index: NextPageWithLayout = () => {
       </Head>
 
       <Container>
-        <Main items={playlistData as Array<ModelWithId>} />
+        {isLoading ? <Loader /> : <Main items={playlists} />}
       </Container>
     </>
   );

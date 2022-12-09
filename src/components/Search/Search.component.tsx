@@ -66,9 +66,9 @@ const Search = ({ open, onClose, selectPlaylist }: SearchProps) => {
   const { ready, client } = useSpotify();
 
   useEffect(() => {
-    setResult([])
-    setValue("")
-  }, [open])
+    setResult([]);
+    setValue("");
+  }, [open]);
 
   useEffect(() => {
     if (!value) return setValue("");
@@ -83,8 +83,6 @@ const Search = ({ open, onClose, selectPlaylist }: SearchProps) => {
       }
     );
   }, [client, ready, value]);
-
-  console.log(result);
 
   return (
     <>
@@ -111,7 +109,7 @@ const Search = ({ open, onClose, selectPlaylist }: SearchProps) => {
             <motion.div
               variants={playlistsWrapper}
               initial="hidden"
-              animate={"visible"}
+              animate="visible"
               className={styles.playlistWrapper}
             >
               {result.length > 0 ? (

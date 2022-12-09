@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }: Props) {
       <SessionProvider session={pageProps.session}>
         <SpotifyProvider>
           <PlayerProvider>
-            <AnimatePresence exitBeforeEnter>
+            <AnimatePresence>
               {withLayout(<Component {...pageProps} />)}
             </AnimatePresence>
           </PlayerProvider>

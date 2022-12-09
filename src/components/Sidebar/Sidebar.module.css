@@ -9,5 +9,5 @@
 }
 
 .top {
-  @apply sticky z-[7] top-0 w-full shadow-md;
+  @apply z-[7] shadow-md;
 }

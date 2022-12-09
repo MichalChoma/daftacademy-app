@@ -68,7 +68,6 @@ export const Form: React.FC<Props> = ({}) => {
   const onSubmit = handleSubmit(async (data) => {
     data.slug = createSlug(data.name)
     try{
-      console.log(data)
       setLoading(true);
       const response: Response = await fetch("/api/playlist", {
         method: "POST",

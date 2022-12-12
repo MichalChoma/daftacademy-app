@@ -24,7 +24,7 @@ export const useSpotifyPlaylist = ({ id, ...config }: Props) => {
 
   return {
     ...swr,
-    data: swr.data,
+    SpotifyData: swr.data,
     isLoading,
   };
 };

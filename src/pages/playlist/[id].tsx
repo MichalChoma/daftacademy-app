@@ -1,18 +1,20 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import Head from "next/head";
-import React from "react";
-import { Container, Layout } from "~/components";
+import React, { useEffect, useState } from "react";
+import { Container, Layout, Loader } from "~/components";
 import { usePlaylist } from "~/hooks/usePlaylist.hook";
+import useSpotifyPlaylist from "~/hooks/useSpotifyPlaylist.hook";
 import { getAllIds, getPlaylistById } from "~/libraries/api.library";
 import dbConnect from "~/libraries/mongoose.library";
 import { NextPageWithLayout } from "~/types/common.types";
+import PlaylistView from "~/views/Playlist/Playlist.view";
 
 export const getStaticProps = async (ctx: GetStaticPropsContext) => {
   const id = ctx.params?.id?.toString();
   await dbConnect();
-  const data = await getPlaylistById(id);
+  const dataDB = await getPlaylistById(id);
 
-  if (!data) {
+  if (!dataDB) {
     return {
       notFound: true,
     };
@@ -20,9 +22,9 @@ export const getStaticProps = async (ctx: GetStaticPropsContext) => {
 
   return {
     props: {
-      id: data.id,
+      id: dataDB.id,
       fallbackData: {
-        data,
+        dataDB,
       },
     },
     revalidate: 60 * 5,
@@ -43,26 +45,59 @@ export const getStaticPaths = async () => {
 
   return {
     paths,
-    fallback: true,
+    fallback: 'blocking'
   };
 };
 
 const Playlist: NextPageWithLayout<
   InferGetStaticPropsType<typeof getStaticProps>
 > = ({ id, fallbackData }) => {
+  const [loading, setLoading] = useState<boolean>(true);
+  
+  const { data, isLoading } = usePlaylist({
+    id,
+    fallbackData,
+  });
 
-    const { data, isLoading} = usePlaylist({
-        id,
-        fallbackData,
-        revalidateOnMount: false,
-    });
+  const { isLoading: SpotifyIsLoading, mutate, SpotifyData } = useSpotifyPlaylist({
+    id: fallbackData.dataDB.spotifyId,
+  });
+
+  React.useEffect(() => {
+    setLoading(isLoading || SpotifyIsLoading);
+  }, [isLoading, SpotifyIsLoading]);
+  
+  useEffect(() => {
+    if(SpotifyData?.spotifyId){
+      mutate();
+    }
+  },[SpotifyData?.spotifyId, mutate])
+
+  console.log(data)
+
   return (
     <>
-        <Head>
-            <title>DaftAcademy - lista</title>
-        </Head>
+      <Head>
+        <title>DaftAcademy - {fallbackData?.dataDB.name || ""}</title>
+      </Head>
       <Container>
-        PlaylistId: {id}
+        {loading || !SpotifyData ? (
+          <Loader />
+        ) : (
+          <PlaylistView
+            playlist={{
+              name: data?.name || "",
+              owner: data?.owner || "",
+              slug: data?.slug || "",
+              spotifyId: data?.spotifyId || "",
+              upvote: data?.upvote || 0,
+              color: data?.color || "",
+              url: SpotifyData?.body.external_urls.spotify,
+              image: SpotifyData?.body.images[0].url,
+            }}
+            trackList={SpotifyData?.body.tracks.items || []}
+          />
+        )}
       </Container>
     </>
   );

@@ -1,4 +1,4 @@
-import { ModelWithId } from "~/models/Playlist.model";
+import { Model, ModelWithId } from "~/models/Playlist.model";
 import useSWR, { SWRConfiguration } from "swr";
 import { fetcher } from "~/libraries/swr.library";
 import { Response } from "~/pages/api/playlist"
@@ -14,7 +14,7 @@ export const usePlaylist = ({id, ...config}: usePlaylistProps) => {
 
     return {
         ...swr,
-        data: swr.data?.data as ModelWithId[],
+        data: swr.data?.data as Model,
         isLoading
     }
 }

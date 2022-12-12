@@ -32,7 +32,7 @@ export const getStaticProps = async () => {
 
 const Index: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>> = ({fallbackData, limit}) => {
 
-const {data, mutate, isLoading } = useList({
+const {data, isLoading } = useList({
   limit,
   fallbackData,
   revalidateOnMount: false,

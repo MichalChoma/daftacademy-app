@@ -73,7 +73,6 @@ const Playlist: NextPageWithLayout<
     }
   },[SpotifyData?.spotifyId, mutate])
 
-  console.log(data)
 
   return (
     <>

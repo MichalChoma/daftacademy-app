@@ -3,6 +3,7 @@ export const DEFAULT_CARD_COLOR = "#000000";
 
 export const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 export const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET || "";
+export const NEXT_PUBLIC_SECRET = process.env.NEXT_PUBLIC_SECRET || "";
 export const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "";
 export const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || "";
 export const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || "";

@@ -1,4 +1,4 @@
-import { NEXTAUTH_SECRET, SPOTIFY_AUTH_SCOPES, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from "~/config/common.config";
+import { NEXT_PUBLIC_SECRET, SPOTIFY_AUTH_SCOPES, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from "~/config/common.config";
 import spotify from "~/libraries/spotify.library";
 import Spotify from 'next-auth/providers/spotify'
 import NextAuth from "next-auth";
@@ -33,7 +33,7 @@ export default NextAuth({
             authorization: spotify.createAuthorizeURL(SPOTIFY_AUTH_SCOPES, "")
         }),
     ],
-    secret: NEXTAUTH_SECRET,
+    secret: NEXT_PUBLIC_SECRET,
     pages: {
         signIn: "/authenticate"
     },

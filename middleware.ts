@@ -1,14 +1,14 @@
 import { getToken } from "next-auth/jwt";
 import { NextMiddlewareResult } from "next/dist/server/web/types";
 import { NextRequest, NextResponse } from "next/server";
-import { NEXTAUTH_SECRET } from "~/config/common.config";
+import { NEXT_PUBLIC_SECRET } from "~/config/common.config";
 
 export async function middleware(req: NextRequest): Promise<NextMiddlewareResult>{
     const { pathname } = req.nextUrl;
 
     const token = await getToken({
         req,
-        secret: NEXTAUTH_SECRET,
+        secret: NEXT_PUBLIC_SECRET,
     })
 
     if(!token && pathname !== "/authenticate"){

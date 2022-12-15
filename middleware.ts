@@ -11,6 +11,10 @@ export async function middleware(req: NextRequest): Promise<NextMiddlewareResult
         secret: NEXT_PUBLIC_SECRET,
     })
 
+    if(pathname.includes('/api/auth') || token){
+        return NextResponse.next()
+    }
+
     if(!token && pathname !== "/authenticate"){
         return NextResponse.rewrite(new URL("/authenticate", req.url))
     }

@@ -39,19 +39,23 @@ export default NextAuth({
     },
     callbacks: {
         async jwt({ token, user, account }) {
+          // inital sign in
           if (account && user) {
             return {
+              ...token,
               accessToken: account.access_token,
               accessTokenExpires: Number(account.expires_at) * 1000,
               refreshToken: account.refresh_token,
               user,
             };
           }
-    
+          
+          // if token hasnt expired
           if (Date.now() < token.accessTokenExpires) {
             return token;
           }
-    
+          
+          // refresh token
           return refreshAccessToken(token);
         },
         async session({ session, token }) {
@@ -61,4 +65,5 @@ export default NextAuth({
           return session;
         },
       },
+      
 })

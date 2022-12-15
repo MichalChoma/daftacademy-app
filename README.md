@@ -4,7 +4,7 @@
 ## email: clientspotifytest@gmail.com
 ## hasło: ClientSpotify
 
-- Aplikacja zbudowana na kursie od [Daftacademy](https://www.daftacademy.pl/)
+- Aplikacja zbudowana w trakcie kursu od [Daftacademy](https://www.daftacademy.pl/)
 
 - W aplikacji korzystamy z :
 

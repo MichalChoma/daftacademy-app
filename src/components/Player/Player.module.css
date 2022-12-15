@@ -1,5 +1,5 @@
 .root {
-  @apply p-7 border-t border-ui4;
+  @apply p-7 border-t border-ui4
 }
 
 .player {

@@ -64,6 +64,5 @@ export default NextAuth({
           session.error = token.error;
           return session;
         },
-      },
-      
+      },  
 })
